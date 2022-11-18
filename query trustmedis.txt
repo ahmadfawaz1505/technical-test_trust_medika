@@ -1,0 +1,45 @@
+no 1:
+SELECT 
+mu.unit_nama as poli, 
+md.diagnosa_name as diagnosa,
+kp.daftar_tanggal,
+count(dp.diagnosapasien_id) as total
+FROM diagnosa_pasien dp
+join master_diagnosa md on md.diagnosa_id = dp.m_diagnosa_id
+join kunjungan_pasien kp on dp.kunjungan_id = kp.pendaftaran_id
+join master_unit mu on kp.m_unit_id= mu.unit_id 
+where kp.daftar_tanggal >= '2021-07-01' and kp.daftar_tanggal <= '2021-07-31'
+group by mu.unit_nama
+order by total DESC limit 10
+
+no 2:
+SELECT 
+mu.unit_nama as poli, 
+md.diagnosa_name as diagnosa,
+mp.pasien_kota,
+count(dp.diagnosapasien_id) as total
+FROM diagnosa_pasien dp
+join master_diagnosa md on md.diagnosa_id = dp.m_diagnosa_id
+join kunjungan_pasien kp on dp.kunjungan_id = kp.pendaftaran_id
+join master_unit mu on kp.m_unit_id= mu.unit_id
+join master_pasien mp on mp.pasien_id = kp.m_pasien_id
+group by mu.unit_nama
+order by total DESC limit 10
+
+no 3:
+SELECT 
+mu.unit_nama as poli,
+mp.pasien_nama as NamaPasien,
+mp.pasien_alamat as alamat,
+mpy.bayar_nama as cara_bayar,
+dp.diagnosapasien_jenis as Diagnosa,
+mdk.pegawai_nama,
+kp.daftar_tanggal,
+kp.pulang_tanggal
+from diagnosa_pasien dp
+join master_diagnosa md on md.diagnosa_id = dp.m_diagnosa_id
+join kunjungan_pasien kp on dp.kunjungan_id = kp.pendaftaran_id
+join master_unit mu on kp.m_unit_id= mu.unit_id
+join master_pasien mp on mp.pasien_id = kp.m_pasien_id
+join master_pembayaran mpy on mpy.bayar_id = kp.m_bayar_id
+join master_dokter mdk on mdk.pegawai_id = dp.m_dokter_id
