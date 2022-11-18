@@ -1,0 +1,1 @@
+# technical-test_trust_medika
